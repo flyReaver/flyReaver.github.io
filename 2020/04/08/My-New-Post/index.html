@@ -1,0 +1,659 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="luowangda">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Winform数据绑定原理（一）——使用BIndingSource一、控件的赋值我们的目标是实现这样的效果：Label 控件会随着 TextBox 控件内容的修改而更新显示  1.传统方式实现123456&#x2F;&#x2F; 传统事件驱动代码private void textBox1_TextChanged(object sender, EventArgs e)&#123;    person.Name &#x3D; te">
+<meta property="og:type" content="article">
+<meta property="og:title" content="My New Post">
+<meta property="og:url" content="http://example.com/2020/04/08/My-New-Post/index.html">
+<meta property="og:site_name" content="宋城老罗">
+<meta property="og:description" content="Winform数据绑定原理（一）——使用BIndingSource一、控件的赋值我们的目标是实现这样的效果：Label 控件会随着 TextBox 控件内容的修改而更新显示  1.传统方式实现123456&#x2F;&#x2F; 传统事件驱动代码private void textBox1_TextChanged(object sender, EventArgs e)&#123;    person.Name &#x3D; te">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/_Lw_3iCBhDNlY4GK4XXFS7uAzA2HMh0eUV6BqmdV9BM.gif">
+<meta property="og:image" content="http://example.com/iGWvV6TEp8zPe_JXd_c0M_9MMMdcYYSncSguWILv_mU.gif">
+<meta property="og:image" content="http://example.com/tvSYCQfXls4k1FFPs-i42gIHVV4uSF4U9j8aWfk8a9Q.gif">
+<meta property="article:published_time" content="2020-04-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-04-08T08:39:02.497Z">
+<meta property="article:author" content="luowangda">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/_Lw_3iCBhDNlY4GK4XXFS7uAzA2HMh0eUV6BqmdV9BM.gif">
+  
+  
+  
+  <title>My New Post - 宋城老罗</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="My New Post"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-04-08 00:00" pubdate>
+          2020年4月8日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          12 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">My New Post</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Winform数据绑定原理（一）——使用BIndingSource"><a href="#Winform数据绑定原理（一）——使用BIndingSource" class="headerlink" title="Winform数据绑定原理（一）——使用BIndingSource"></a>Winform数据绑定原理（一）——使用BIndingSource</h1><h1 id="一、控件的赋值"><a href="#一、控件的赋值" class="headerlink" title="一、控件的赋值"></a>一、控件的赋值</h1><p>我们的目标是实现这样的效果：<code>Label</code> 控件会随着 <code>TextBox</code> 控件内容的修改而更新显示</p>
+<p><img src="/_Lw_3iCBhDNlY4GK4XXFS7uAzA2HMh0eUV6BqmdV9BM.gif" srcset="/img/loading.gif" lazyload alt="image"></p>
+<h2 id="1-传统方式实现"><a href="#1-传统方式实现" class="headerlink" title="1.传统方式实现"></a>1.传统方式实现</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-comment">// 传统事件驱动代码</span><br><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">textBox1_TextChanged</span>(<span class="hljs-params"><span class="hljs-built_in">object</span> sender, EventArgs e</span>)</span><br>&#123;<br>    person.Name = textBox1.Text;<br>    label1.Text = <span class="hljs-string">$&quot;Hello, <span class="hljs-subst">&#123;person.Name&#125;</span>&quot;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>在传统的WinForms开发中，开发者需要手动同步界面控件与后台数据源的状态，这里用户在<code>TextBox</code>中输入内容时，需要编写<code>TextChanged</code>事件处理代码，将新值手动更新到数据对象；反之，若数据对象的属性被代码修改，也需要手动更新对应的控件。这种方式存在以下问题：</p>
+<ul>
+<li><strong>代码冗余</strong>：每个控件都需要编写事件监听和数据同步逻辑，当界面变得复杂时，事件处理代码会大量增加，UI 与业务逻辑耦合严重</li>
+<li><strong>维护困难</strong>：当界面或数据模型变动时，需修改多处代码。</li>
+<li><strong>易出错</strong>：手动同步可能遗漏某些场景</li>
+</ul>
+<h2 id="2-绑定模式"><a href="#2-绑定模式" class="headerlink" title="2.绑定模式"></a>2.绑定模式</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Form1</span>()</span><br>&#123;<br>    InitializeComponent();<br>    <span class="hljs-keyword">var</span> person = <span class="hljs-keyword">new</span> Person();  <span class="hljs-comment">// 创建 ViewModel 实例</span><br>    <br>    <span class="hljs-comment">// 绑定 TextBox.Text 到 ViewModel.Name（双向绑定）</span><br>    textBox1.DataBindings.Add(<br>        <span class="hljs-string">&quot;Text&quot;</span>,                     <span class="hljs-comment">// 控件的属性</span><br>        person,                   <span class="hljs-comment">// 数据源（ViewModel）</span><br>        <span class="hljs-string">&quot;Name&quot;</span>,                     <span class="hljs-comment">// 数据源的属性</span><br>        <span class="hljs-literal">false</span>,                      <span class="hljs-comment">// 是否启用格式化</span><br>        DataSourceUpdateMode.OnPropertyChanged <span class="hljs-comment">// 更新模式</span><br>    );<br>    <br>    <span class="hljs-comment">// 绑定 Label.Text 到 ViewModel.Title（单向绑定）</span><br>    label1.DataBindings.Add(<br>        <span class="hljs-string">&quot;Text&quot;</span>, <br>        person, <br>        <span class="hljs-string">&quot;Title&quot;</span>, <br>        <span class="hljs-literal">false</span>, <br>        DataSourceUpdateMode.Never  <span class="hljs-comment">// 数据源更新时不回写</span><br>    );<br>&#125;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Person</span> : <span class="hljs-title">INotifyPropertyChanged</span><br>&#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-built_in">string</span> _name;<br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> Name<br>    &#123;<br>        <span class="hljs-keyword">get</span> =&gt; _name;<br>        <span class="hljs-keyword">set</span><br>        &#123;<br>            _name = <span class="hljs-keyword">value</span>;<br>            PropertyChanged?.Invoke(<span class="hljs-keyword">this</span>, <span class="hljs-keyword">new</span> PropertyChangedEventArgs(<span class="hljs-keyword">nameof</span>(Name)));<br>            PropertyChanged?.Invoke(<span class="hljs-keyword">this</span>, <span class="hljs-keyword">new</span> PropertyChangedEventArgs(<span class="hljs-keyword">nameof</span>(Title)));<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">string</span> Title =&gt; <span class="hljs-string">$&quot;Hello <span class="hljs-subst">&#123;Name&#125;</span>&quot;</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">event</span> PropertyChangedEventHandler PropertyChanged;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>数据绑定</strong>的核心思想是通过<strong>数据绑定</strong>将视图与逻辑解耦，实现双向自动同步：</p>
+<ul>
+<li>数据源变更时，自动更新界面</li>
+<li>界面操作（如用户输入）自动更新数据源。</li>
+</ul>
+<h2 id="3-绑定说明"><a href="#3-绑定说明" class="headerlink" title="3.绑定说明"></a>3.绑定说明</h2><p>我们来看这行代码：<code>textBox1.DataBindings.Add(&quot;Text&quot;, person, &quot;Name&quot;, false, DataSourceUpdateMode.OnPropertyChanged);</code> 前三个参数表示将 <code>textBox1</code> 控件的 <code>Text</code> 属性绑定到 <code>personVM</code> 对象的 <code>Name</code> 属性。这样，当两边对象的属性发生更改时，都会通知另一方。当我们通过控件（UI 界面）修改 <code>textBox1</code> 的值时，就会触发 <code>person.Name</code> 属性的 <code>set</code> 方法，而 <code>set</code> 方法中又调用了 <code>Title</code> 的 <code>PropertyChanged</code> 事件。由于 <code>label1</code> 绑定了 <code>Title</code>，所以 <code>Label</code> 也会随之更新。</p>
+<p>代码解释：Control属性<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.windows.forms.control.databindings">DataBindings</a>是 从Control父类继承的属性  是一个 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/dotnet/api/system.windows.forms.controlbindingscollection?view=netframework-4.8">ControlBindingsCollection</a>，其中包含该控件的 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/dotnet/api/system.windows.forms.binding?view=netframework-4.8">Binding</a> 对象。Add方法内部则是new了一个<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/dotnet/api/system.windows.forms.binding">Binding</a> 。</p>
+<h1 id="二、BindingSource-数据源"><a href="#二、BindingSource-数据源" class="headerlink" title="二、BindingSource 数据源"></a>二、<strong>BindingSource</strong> 数据源</h1><h2 id="1-简单使用"><a href="#1-简单使用" class="headerlink" title="1.简单使用"></a>1.简单使用</h2><p>在上述例子中，保持其他代码不变，将 <code>Form</code> 构造函数中的代码修改如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs csharp">InitializeComponent();<br><span class="hljs-keyword">var</span> person = <span class="hljs-keyword">new</span> PersonViewModel();<br>BindingSource source = <span class="hljs-keyword">new</span> BindingSource();<br>source.DataSource = person;<br>textBox1.DataBindings.Add(<span class="hljs-string">&quot;Text&quot;</span>, source, <span class="hljs-string">&quot;Name&quot;</span>, <span class="hljs-literal">false</span>, DataSourceUpdateMode.OnPropertyChanged);<br>label1.DataBindings.Add(<span class="hljs-string">&quot;Text&quot;</span>, source, <span class="hljs-string">&quot;Title&quot;</span>, <span class="hljs-literal">false</span>, DataSourceUpdateMode.Never);<br>person.Name = <span class="hljs-string">&quot;test&quot;</span>;<br></code></pre></td></tr></table></figure>
+<p>再操作UI界面，会得到相同的效果。那么，BindingSource作用是什么呢？ 为什么要用它呢？</p>
+<h2 id="2-复杂例子"><a href="#2-复杂例子" class="headerlink" title="2.复杂例子"></a>2.复杂例子</h2><p>我们先来看一个稍微复杂的例子</p>
+<p><img src="/iGWvV6TEp8zPe_JXd_c0M_9MMMdcYYSncSguWILv_mU.gif" srcset="/img/loading.gif" lazyload alt="image"></p>
+<p>在这个例子中，我们可能会觉得不知道如何使用<code>Binding</code>了，因为这里不再是一个属性对应一个值，而是一个集合。不信的话，你可以尝试使用以下代码：<code>dataGridView1.DataBindings.Add(&quot;DataSource&quot;, listPerson, &quot;Name&quot;, false, DataSourceUpdateMode.OnPropertyChanged)</code> 你会发现没有任何响应，甚至会报错。</p>
+<p>下面是正确的简单实现：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs csharp">List&lt;Person&gt; listPerson;<br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">BindingSourceComp01</span>()</span><br>&#123;<br>    InitializeComponent();<br>    listPerson = <span class="hljs-keyword">new</span> List&lt;Person&gt;()<br>    &#123;<br>        <span class="hljs-keyword">new</span> Person() &#123; ID=<span class="hljs-number">1</span>,Name=<span class="hljs-string">&quot;关羽&quot;</span>&#125;,<br>        <span class="hljs-keyword">new</span> Person() &#123; ID=<span class="hljs-number">2</span>,Name=<span class="hljs-string">&quot;张飞&quot;</span>&#125;,<br>        <span class="hljs-keyword">new</span> Person() &#123; ID=<span class="hljs-number">3</span>,Name=<span class="hljs-string">&quot;马超&quot;</span>&#125;<br>    &#125;;<br>    dataGridView1.DataSource = listPerson;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">button1_Click</span>(<span class="hljs-params"><span class="hljs-built_in">object</span> sender, EventArgs e</span>)</span><br>&#123;<br>    <span class="hljs-keyword">var</span> name = textBox1.Text;<br>    listPerson.Add(<span class="hljs-keyword">new</span> Person() &#123; ID = listPerson.Count + <span class="hljs-number">1</span>, Name = name &#125;);<br>    <span class="hljs-comment">// 没有绑定，需要手动刷新</span><br>    dataGridView1.DataSource = <span class="hljs-literal">null</span>;<br>    dataGridView1.DataSource = listPerson;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这时候，<code>BindingSource</code> 就可以发挥作用了，只需要维护创建的数据源对象即可，代码会变得简洁：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs csharp">BindingSource bindingSource;<br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">BindingSourceComp01</span>()</span><br>&#123;<br>    InitializeComponent();<br>    List&lt;Person&gt; listPerson = <span class="hljs-keyword">new</span> List&lt;Person&gt;()<br>    &#123;<br>        <span class="hljs-keyword">new</span> Person() &#123; ID=<span class="hljs-number">1</span>,Name=<span class="hljs-string">&quot;关羽&quot;</span>&#125;,<br>        <span class="hljs-keyword">new</span> Person() &#123; ID=<span class="hljs-number">2</span>,Name=<span class="hljs-string">&quot;张飞&quot;</span>&#125;,<br>        <span class="hljs-keyword">new</span> Person() &#123; ID=<span class="hljs-number">3</span>,Name=<span class="hljs-string">&quot;马超&quot;</span>&#125;<br>    &#125;;<br>       <span class="hljs-comment">// 将数据集合设置到 BindingSource</span><br>       bindingSource = <span class="hljs-keyword">new</span> BindingSource() &#123; DataSource = listPerson &#125;;<br>       <span class="hljs-comment">// 将 BindingSource 作为 DataGridView 的数据源</span><br>       dataGridView1.DataSource = bindingSource;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">button1_Click</span>(<span class="hljs-params"><span class="hljs-built_in">object</span> sender, EventArgs e</span>)</span><br>&#123;<br>    <span class="hljs-keyword">var</span> name = textBox1.Text;<br>    <span class="hljs-comment">// 注意这里要用BindingSource 不能再用普通集合操作了</span><br>    bindingSource.Add(<span class="hljs-keyword">new</span> Person()<br>    &#123;<br>        ID = bindingSource.Count + <span class="hljs-number">1</span>, <span class="hljs-comment">// 这里id不是很严谨，因为可能有删除操作，所以这里只是简单的加1</span><br>        Name = name<br>    &#125;);<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="3-解释-BindingSource"><a href="#3-解释-BindingSource" class="headerlink" title="3.解释 BindingSource"></a>3.解释 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/dotnet/desktop/winforms/controls/bindingsource-component-architecture?view=netframeworkdesktop-4.8">BindingSource</a></h2><p>BindingSource组件在Windows Forms中主要用于简化数据绑定并增强控件与数据源之间的交互，其核心功能及特点如下：</p>
+<ol>
+<li><strong>核心作用</strong><ul>
+<li>提供<strong>间接绑定层</strong> ，将控件与数据源解耦。通过将控件绑定到BindingSource，再由BindingSource连接实际数据源（如数据库、对象集合等），实现数据变更的自动同步</li>
+</ul>
+</li>
+<li><strong>同步与导航</strong><ul>
+<li>多个控件绑定同一BindingSource时，自动同步当前项及数据变更，避免手动更新</li>
+<li>内置<code>CurrencyManager</code>管理数据导航（如记录切换），简化分页或数据遍历操作</li>
+</ul>
+</li>
+</ol>
+<h1 id="三、综合例子"><a href="#三、综合例子" class="headerlink" title="三、综合例子"></a>三、综合例子</h1><p>带一个新增和删除的效果（暂时不考虑额外窗体编辑）</p>
+<p><img src="/tvSYCQfXls4k1FFPs-i42gIHVV4uSF4U9j8aWfk8a9Q.gif" srcset="/img/loading.gif" lazyload alt="image"></p>
+<p>代码如下</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">InitDataGridView</span>()</span><br>&#123;<br>	bindingSource = <span class="hljs-keyword">new</span> BindingSource() &#123; DataSource = Student.GetList() &#125;;<br>	dgvStudent.DataSource = bindingSource;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">btnAdd_Click</span>(<span class="hljs-params"><span class="hljs-built_in">object</span> sender, EventArgs e</span>)</span><br>&#123;<br>	bindingSource.Add(<span class="hljs-keyword">new</span> Student<br>	&#123;<br>		Id = <span class="hljs-number">10</span>,<br>		Name = <span class="hljs-string">&quot;New Student&quot;</span>,<br>		Age = <span class="hljs-number">20</span>,<br>		Classes = <span class="hljs-number">4</span>,<br>		Address = <span class="hljs-string">&quot;New Address&quot;</span><br>	&#125;);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">btnDel_Click</span>(<span class="hljs-params"><span class="hljs-built_in">object</span> sender, EventArgs e</span>)</span><br>&#123;<br>	<span class="hljs-comment">// 通过bindingSource.Current获取当前选中的对象</span><br>	<span class="hljs-keyword">if</span> (bindingSource.Current <span class="hljs-keyword">is</span> Student item)<br>	&#123;<br>		<span class="hljs-keyword">var</span> result = MessageBox.Show(<span class="hljs-string">&quot;是否删除?&quot;</span>, <span class="hljs-string">&quot;删除&quot;</span>, MessageBoxButtons.OKCancel, MessageBoxIcon.Question);<br>		<span class="hljs-keyword">if</span> (result.Equals(DialogResult.OK))<br>			bindingSource.Remove(item);<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>My New Post</div>
+      <div>http://example.com/2020/04/08/My-New-Post/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>luowangda</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2020年4月8日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/04/07/hello-world/" title="Hello World">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Hello World</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
